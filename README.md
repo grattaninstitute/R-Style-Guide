@@ -1,4 +1,10 @@
-
+---
+title: "R-Style-Guide"
+author: "Hugh Parsonage" "Tim Cameron"
+date: "24 April 2016"
+output: html_document
+toc: true
+---
 ![Style Guide Header](http://i.imgur.com/mZvS8Qn.png)
 
 Adapted from Hadley Whickam’s ‘[Advanced R](http://adv-r.had.co.nz/Style.html)’ and [this](http://stackoverflow.com/questions/1429907/workflow-for-statistical-analysis-and-report-writing/) Stack Overflow question
@@ -194,5 +200,56 @@ Use commented lines of `-` and `=` to break up your file into easily readable ch
 
 # Plot data ---------------------------
 ```
+
+# knitr
+## Prevent duplication
+Whenever an object is created in the global environment, its assignment must be in a single chunk. The chunk name must be the exact name of the object created:
+
+*Wrong:`
+```{tex, eval = FALSE}
+<<useful-objects>>=
+discount_rate <- 0.05
+n <- 15
+values <- rep(100, n)
+NPV <- sum(values / (1 + discount_rate) ^ seq_along(values))
+@
+```
+*Better:*
+```
+<<discount_rate>>=
+discount_rate <- 0.05
+@
+
+<<n>>=
+n <- 15
+@
+
+<<values>>=
+values <- rep(100, n)
+@
+
+<<NPV>>=
+NPV <- sum(values / (1 + discount_rate) ^ seq_along(values))
+@
+```
+Prefer fuctions than static objects. For example, the above would be better as:
+
+*Best:*
+```{r, eval = FALSE}
+<<NPV>>=
+NPV <- function(discount_rate = 0.05, n = 15, values = rep(100, n)){
+  sum(values / (1 + discount_rate) ^ seq_along(values))
+}
+@
+```
+
+
+
+
+
+
+```
+
+
 
  [1]: http://google-styleguide.googlecode.com/svn/trunk/google-r-style.html
