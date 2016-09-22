@@ -1,10 +1,12 @@
 ---
 title: "R-Style-Guide"
-author: "Hugh Parsonage" "Tim Cameron"
+author: 
+ - "Hugh Parsonage" 
+ - "Tim Cameron"
 date: "24 April 2016"
-output: html_document:
-  toc: true
+output: html_document
 ---
+
 ![Style Guide Header](http://i.imgur.com/mZvS8Qn.png)
 
 Adapted from Hadley Whickam’s ‘[Advanced R](http://adv-r.had.co.nz/Style.html)’ and [this](http://stackoverflow.com/questions/1429907/workflow-for-statistical-analysis-and-report-writing/) Stack Overflow question
@@ -242,6 +244,47 @@ NPV <- function(discount_rate = 0.05, n = 15, values = rep(100, n)){
 }
 @
 ```
+
+## Chunks should be idempotent
+Chunks should be idempotent. 
+That is, the output of a chunk should not depend on whether it has previously run.
+(A function $f$ is **idempotent** if $f(f(x)) = f(x)$.)
+This ensures that once a knitr file has been sourced, each chunk can be run individually and return the expected results.
+
+Although modifying an existing knitr document to fit this requirement is hard, it is almost always possible. 
+
+*Good:*
+```
+<<chunk1>>=
+x <- 1
+@
+
+<<chunk2>>=
+print(x^2)
+@
+```
+
+*Bad:*
+
+```
+
+<<chunk1>>=
+x <- 1
+@
+
+<<chunk2>>=
+x <- x^2  # not idempotent
+print(x)
+@
+
+```
+
+Typically, files that fail this requirement will fail due to assignment of an object occuring before or after it attains its true value.
+
+
+
+
+
 
 
 
