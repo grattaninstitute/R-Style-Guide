@@ -2,8 +2,8 @@
 title: "R-Style-Guide"
 author: "Hugh Parsonage" "Tim Cameron"
 date: "24 April 2016"
-output: html_document
-toc: true
+output: html_document:
+  toc: true
 ---
 ![Style Guide Header](http://i.imgur.com/mZvS8Qn.png)
 
