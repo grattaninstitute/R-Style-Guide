@@ -281,6 +281,54 @@ print(x)
 
 Typically, files that fail this requirement will fail due to assignment of an object occuring before or after it attains its true value.
 
+Note that a consequence of this is that the reassignment pipe `%<>%` is not permitted!
+
+```{r, echo=FALSE}
+knitr::opts_chunk$set(eval=FALSE)
+```
+
+## Miscellaneous
+
+Any function of a data.frame should include be piped:
+
+```{r}
+library(taxstats)
+sample_file_1314 %$%
+  mean(Taxable_Income)
+```
+
+When the RHS of an assignment contains a pipe, the right hand side must commence from a new line (indented naturally).
+
+**Right**
+
+```{r}
+average_income_by_Sex <- 
+  sample_file_1314 %>%
+  group_by(Sex) %>%
+  summarise(average_income = mean(Taxable_Income))
+```
+
+**Wrong**
+
+```{r}
+average_income_by_Sex <- sample_file_1314 %>%
+  group_by(Sex) %>%
+  summarise(average_income = mean(Taxable_Income))
+```
+
+When the RHS of a pipe is a closure, the object `dot` should represent the LHS, unless the word `dot` would be misunderstood:
+
+```{r}
+average_income_by_Sex <- 
+  sample_file_1314 %T>%
+  {
+    dot <- .
+    stopifnot(length(dot$Sex) == 2)
+  } %>%
+  group_by(Sex) %>%
+  summarise(average_income = mean(Taxable_Income))
+```
+
 
 
 
