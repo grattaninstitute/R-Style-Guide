@@ -15,7 +15,22 @@ As more Grattan staff make the noble switch from STATA to R, our work is more ri
 
 As Hadley says, “Good style is important because while your code only has one author, it’ll usually have multiple readers. This is especially true when you’re writing code with others. In that case, it’s a good idea to agree on a common style up-front. Since no style is strictly better than another, working with others may mean that you’ll need to sacrifice some preferred aspects of your style.”
 
-The formatr package, by Yihui Xie, makes it easier to clean up poorly formatted code. It can't do everything, but it can quickly get your code from terrible to pretty good. Make sure to read [the notes on the wiki](https://github.com/yihui/formatR/wiki) before using it.
+The formatR package, by Yihui Xie, makes it easier to clean up poorly formatted code. It can't do everything, but it can quickly get your code from terrible to pretty good. Make sure to read [the notes on the wiki](https://github.com/yihui/formatR/wiki) before using it.
+
+# Purposeful or literate files
+
+### Preamble
+
+You should take some time considering the purpose of the code you are developing. Are you writing code to put into a report? Are you conducting exploratory data analysis? Are you developing code which might span multiple reports (or even multiple programs)?
+
+Despite being the default, R scripts are easy to write poorly. Experience has shown R scripts end up doing multiple things meaning that to understand any of the outputs, reviewers have to plough through multiple lines. 
+
+## R scripts
+R scripts should produce a **single** output, the exception with the outputs are very closely related. If multiple outputs are required, multiple scripts should be produced. 
+
+## Code supporting analysis
+Should be woven through `knitr`, most likely with a LaTeX (Rnw) flavour. It is imperative that code supporting analysis is written in a single document, optionally with a package.
+
 
 ## Notation and naming
 
@@ -124,7 +139,9 @@ x[1 ,]  # Space goes after comma not before
 
 ### Curly braces
 
-An opening curly brace should never go on its own line and should always be followed by a new line. A closing curly brace should always go on its own line, unless it's followed by `else`.
+An opening curly brace should never go on its own line and should always be followed by a new line. A closing curly brace should always go on its own line, unless it's followed by `else`. 
+
+An opening brace should be preceded by a space.
 
 Always indent the code inside curly braces.
 
