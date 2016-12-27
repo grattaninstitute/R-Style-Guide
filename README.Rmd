@@ -103,6 +103,16 @@ x <- 1 : 10
 base :: get
 ```
 
+but there is not exception to the rule in `data.table`:
+
+```{r, eval = FALSE}
+# Good
+DT[, x := y * 2]
+
+# Bad
+DT[ ,x := y * 2]
+```
+
 Place a space before left parentheses, except in a function call.
 
 ```{r, eval = FALSE}
