@@ -244,7 +244,10 @@ Use commented lines of `-` and `=` to break up your file into easily readable ch
 ```
 
 # knitr
-## Prevent duplication
+
+## Naming
+
+### Avoiding duplication
 Whenever an object is created in the global environment, its assignment must be in a single chunk. The chunk name must be the exact name of the object created:
 
 *Wrong:`
@@ -283,6 +286,37 @@ NPV <- function(discount_rate = 0.05, n = 15, values = rep(100, n)){
   sum(values / (1 + discount_rate) ^ seq_along(values))
 }
 @
+```
+
+### Chunks which print charts
+If a chunk prints a chart, the chunk should be named `y_axis-vs-x_axis-by-other-aes--filters`
+
+*OK:*
+```{r, eval = FALSE}
+<<price-vs-carat-by-table>>=
+ggplot(diamonds, aes(carat, price, color = table)) +
+  geom_point()
+@
+  
+<<price-vs-carat-by-table--nonIdeal>>=
+ggplot(diamonds[diamonds$cut != "Ideal", ], aes(carat, price, color = table)) +
+  geom_point() 
+@
+```
+
+To remove ambiguity, the name may be preceded by the principal layer (*i.e.* the chart type):
+
+```{r, eval=FALSE}
+<<scatterplot-price-vs-carat-by-table>>=
+ggplot(diamonds, aes(carat, price, color = table)) +
+  geom_point()
+@
+  
+<<hexbin-price-vs-carat-by-table>>=
+ggplot(diamonds, aes(carat, price, color = table)) +
+  geom_hex()
+@
+
 ```
 
 ## Chunks should be idempotent
