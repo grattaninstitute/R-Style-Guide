@@ -35,7 +35,7 @@ Errors should be raised in a function when its inputs:
 Warnings should be raised when the inputs have a *likely* interpretation, but there is a risk that that interpretation is not what was intended.
 
 ### Grammar and format of error and warning messages
-Error messages:
+An error message should:
 
   * **Use existing base R phraseology** where the error condition is practically identical:
 
@@ -46,12 +46,37 @@ Error messages:
     > `` Line 1 was not \documentclass[<options>]{grattan} ``
   
     Even if what caused the problem is still present when the error message is emitted, it should not be in the present tense. 
+    
+  * **Contextualize** the error message by providing the substance of the error condition. (Optional)
   
-  * **They advise what the user needs to change** in the next sentence. Except when the error message is canonical (*e.g.* `missing, with no default`), it should contain clear instructions on what to do. 
+  * **Advise what the user needs to change** in the next sentence. Except when the error message is canonical (*e.g.* `missing, with no default`), it should contain clear instructions on what to do, with an imperative mood.
   
     > `` File 'dsfihods' was not found; getwd()=='C:/Users/hughp/Documents/R-style-guide'. ``
     > `` Include correct full path, or one or more spaces to consider the input a system command. ``
 
+
+  * If a plausible and satisfactory solution can be suggested, **offer a solution in the form of a question** as a separate sentence enclosed in parentheses. 
+  
+    > `` File 'dat/Australia.csv' was not found. Include correct full path. (Did you mean 'data/Australia.csv'?) ``
+    
+Warning messages:
+
+  * **Specify what the guess the program made that is unsure about**.
+  This should be written in the present tense, as if the program is sending an update about its progress.
+  Even though an error message is written in the past tense despite being closer in time to the occurrence of the error condition, warning messages cannot guarantee the time in which they are emitted so the guess needs to be concurrent with the warning condition.
+  
+  * If possible, **specify a probable and worst-case** outcome if this warning message were ignored.
+  
+  * **Advise what the user needs to change** in the next sentence, as in error messages. 
+  
+  * If a plausible and satisfactory solution can be suggested, **offer a solution in the form of a question** as a separate sentence enclosed in parentheses.
+  
+
+Messages emitted by `message`:
+
+  * Specify the condition that caused the message to occur.
+  
+  * Written in a tense that is appropriate for the message, most likely present. 
 
 
 # Purposeful or literate files
