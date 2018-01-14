@@ -17,6 +17,43 @@ As Hadley says, “Good style is important because while your code only has one 
 
 The formatR package, by Yihui Xie, makes it easier to clean up poorly formatted code. It can't do everything, but it can quickly get your code from terrible to pretty good. Make sure to read [the notes on the wiki](https://github.com/yihui/formatR/wiki) before using it.
 
+
+# Packages
+
+## Errors, warnings, and messages
+Practise highly defensive programming. 
+Almost all functions should check their inputs for validity, and provide errors or warnings.
+Messages should be used sparingly, and only when the inputs are only likely to be used in an interactive session.
+
+### Errors vs warnings
+Errors should be raised in a function when its inputs:
+
+  * cannot be interpreted meaningfully
+  * would cause an obscure error when eventually used
+  * have been used before and caused the wrong result
+
+Warnings should be raised when the inputs have a *likely* interpretation, but there is a risk that that interpretation is not what was intended.
+
+### Grammar and format of error and warning messages
+Error messages:
+
+  * **Use existing base R phraseology** where the error condition is practically identical:
+
+    > `` Error: argument `fy.year` was missing, with no default``
+
+  * **Specify what input caused the error condition to occur.** In most cases, the first word should be the argument (enclosed in backticks) that is problematic. This part of the error message should be in the past tense, as if the function has come back from an attempt and realized that the inputs won't work. 
+  
+    > `` Line 1 was not \documentclass[<options>]{grattan} ``
+  
+    Even if what caused the problem is still present when the error message is emitted, it should not be in the present tense. 
+  
+  * **They advise what the user needs to change** in the next sentence. Except when the error message is canonical (*e.g.* `missing, with no default`), it should contain clear instructions on what to do. 
+  
+    > `` File 'dsfihods' was not found; getwd()=='C:/Users/hughp/Documents/R-style-guide'. ``
+    > `` Include correct full path, or one or more spaces to consider the input a system command. ``
+
+
+
 # Purposeful or literate files
 
 ### Preamble
