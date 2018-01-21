@@ -45,7 +45,15 @@ An error message should:
   
     > `` Line 1 was not \documentclass[<options>]{grattan} ``
   
-    Even if what caused the problem is still present when the error message is emitted, it should not be in the present tense. 
+    Even if what caused the problem is still present when the error message is emitted, it should not be in the present tense. The user's instructions have already been given; they're in the past. Further, using present tense could be confusing if the error message represents a condition that has since changed:
+    
+    ```r
+    # Bad:
+    
+    if (x > 0.5) {
+      stop("`x` is greater than 0.5.")  # What if x = runif(1) ?
+    }
+    ```
     
   * **Contextualize** the error message by providing the substance of the error condition. (Optional)
   
@@ -61,11 +69,11 @@ An error message should:
     
 Warning messages:
 
-  * **Specify what the guess the program made that is unsure about**.
+  * **Specify the guess the function made that it is unsure about**.
   This should be written in the present tense, as if the program is sending an update about its progress.
   Even though an error message is written in the past tense despite being closer in time to the occurrence of the error condition, warning messages cannot guarantee the time in which they are emitted so the guess needs to be concurrent with the warning condition.
   
-  * If possible, **specify a probable and worst-case** outcome if this warning message were ignored.
+  * If possible, **specify a probable or worst-case** outcome if this warning message were ignored.
   
   * **Advise what the user needs to change** in the next sentence, as in error messages. 
   
