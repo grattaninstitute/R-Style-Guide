@@ -18,6 +18,10 @@ As Hadley says, “Good style is important because while your code only has one 
 The formatR package, by Yihui Xie, makes it easier to clean up poorly formatted code. It can't do everything, but it can quickly get your code from terrible to pretty good. Make sure to read [the notes on the wiki](https://github.com/yihui/formatR/wiki) before using it.
 
 
+```{r echo=FALSE}
+knitr::opts_chunk$set(eval = FALSE)
+```
+
 # Packages
 
 ## Errors, warnings, and messages
@@ -39,7 +43,7 @@ An error message should:
 
   * **Use existing base R phraseology** where the error condition is practically identical:
 
-    > `` Error: argument `fy.year` was missing, with no default``
+    > `` Error: argument `fy.year` was missing, with no default ``
 
   * **Specify what input caused the error condition to occur.** In most cases, the first word should be the argument (enclosed in backticks) that is problematic. This part of the error message should be in the past tense, as if the function has come back from an attempt and realized that the inputs won't work. 
   
@@ -47,12 +51,21 @@ An error message should:
   
     Even if what caused the problem is still present when the error message is emitted, it should not be in the present tense. The user's instructions have already been given; they're in the past. Further, using present tense could be confusing if the error message represents a condition that has since changed:
     
-    ```r
+    ```{r}
     # Bad:
     
     if (x > 0.5) {
       stop("`x` is greater than 0.5.")  # What if x = runif(1) ?
     }
+    
+    ```
+
+    When a default value conflicts with other values, use the conjunction `yet`:
+   
+    ```{r}
+    
+    project_to(sample_file_1112, "2014-15")
+    #> `fy.year.of.sample.file` was not provided, yet its value could not be inferred from `sample_file`. nrow(sample_file) = 254273. Either use a 2% sample file of the years 2012-13, 2013-14, or 2014-15 or supply `fy.year.of.sample.file` manually.
     ```
     
   * **Contextualize** the error message by providing the substance of the error condition. (Optional)
