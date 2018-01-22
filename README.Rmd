@@ -25,9 +25,13 @@ knitr::opts_chunk$set(eval = FALSE)
 # Packages
 
 ## Errors, warnings, and messages
+
 Practise highly defensive programming. 
 Almost all functions should check their inputs for validity, and provide errors or warnings.
-Messages should be used sparingly, and only when the inputs are only likely to be used in an interactive session.
+
+> "For a program, it's worse to remain silent and be thought to have worked than to raise an error and remove all doubt."
+
+Messages via `message()` should be used sparingly, and only when the inputs are only likely to be used in an interactive session.
 
 ### Errors vs warnings
 Errors should be raised in a function when its inputs:
@@ -91,6 +95,8 @@ Warning messages:
   * **Advise what the user needs to change** in the next sentence, as in error messages. 
   
   * If a plausible and satisfactory solution can be suggested, **offer a solution in the form of a question** as a separate sentence enclosed in parentheses.
+  
+  * A warning should be able to be suppressed via an argument in an exported function. 
   
 
 Messages emitted by `message`:
