@@ -42,7 +42,83 @@ Errors should be raised in a function when its inputs:
 
 Warnings should be raised when the inputs have a *likely* interpretation, but there is a risk that that interpretation is not what was intended.
 
+Strive to document all error and warning conditions.
+
+Our error message guidelines are influenced by the Microsoft [*Error Message Guidelines*](https://msdn.microsoft.com/en-us/library/windows/desktop/ms679325(v=vs.85).aspx), with the following differences:
+
+  * Microsoft recommends avoiding error conditions; we recommend fussiness and strictness. It's far better to raise an error that can be easily fixed than to silently fix input and risk a mistake.
+  * We use past tense in describing error conditions. The imperative mood should of course be used to advise corrective action.
+  * We have a slightly greater tolerance for jargon.
+
+Compared to [Hadley Wickham's style guide](http://style.tidyverse.org/error-messages.html), we:
+
+  * State what was wrong, then what is required. This results in lengthier error messages.
+
+#### Calls
+
+It is often useful to include the call of the function, to clarify how the error arose. However,
+it is also useful to create functions that check common error conditions, or construct error 
+messages, but these calls are not relevant to the user. Ideally, when a user provides a faulty 
+input `x` in a function `f`, we want `f` to be part of the error message.
+
+Consider the following construction:
+
+``` r
+z0 <- function(x) {
+  z1(x)
+}
+z1 <- function(x) {
+  z2(x)
+}
+z2 <- function(x) {
+  if (x == 0) {
+    stop(simpleError("`x` (simple error).", call = sys.call(1-sys.nframe())))
+  }
+  if (x == 1) {
+    stop("`x` (with call).")
+  }
+  if (x == 2) {
+    stop("`x` (without call).", call = FALSE)
+  }
+}
+
+z0(2)
+#> Error: `x` (without call). 
+
+z1(2)
+#> Error: `x` (without call). 
+
+z2(2)
+#> Error: `x` (without call).
+
+z0(1)
+#> Error in z2(x) : `x` (with call). 
+
+z1(1)
+#> Error in z2(x) : `x` (with call).
+
+z2(1)
+#> Error in z2(1) : `x` (with call).
+
+z0(0)
+#> Error in z0(0) : `x` (simple error).
+
+z1(0)
+#> Error in z1(0) : `x` (simple error). 
+
+z2(0)
+#> Error in z2(0) : `x` (simple error).
+```
+
+When the call is omitted, the function handling the error is not mentioned (good), but neither is
+the function that cannot handle the input (bad). When the call is used, the function handling the 
+error is labelled as the guilty party (worse). Using the `simpleError` is a bit cumbersome for
+the developer but allows the correct function to be identified.
+
+
+
 ### Grammar and format of error and warning messages
+
 An error message should:
 
   * **Use existing base R phraseology** where the error condition is practically identical:
@@ -104,6 +180,25 @@ Messages emitted by `message`:
   * Specify the condition that caused the message to occur.
   
   * Written in a tense that is appropriate for the message, most likely present. 
+
+# Semantic versioning
+
+Use semantic versioning with an optional data suffix. From <https://semver.org/>: 
+
+> Given a version number MAJOR.MINOR.PATCH, increment the:
+>
+> 1. MAJOR version when you make incompatible API changes,
+> 2. MINOR version when you add functionality in a backwards-compatible manner, and
+> 3. PATCH version when you make backwards-compatible bug fixes.
+
+In practice inside R packages:
+
+1. Increment the MINOR version whenever a new release includes a new exported function.
+2. Increment the PATCH version whenever you make bug fixes.
+
+The next question is qualifies as 'backwards-incompatible'. This is a difficult question, so we will define it intensionally:
+
+Every test with a major prefix should not be modified. 
 
 
 # Purposeful or literate files
